@@ -13,7 +13,8 @@ import net.minecraft.server.ShapedRecipes;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class VMain extends JavaPlugin {
-	public void onEnable() {
+	@Override
+        public void onEnable() {
 		Set<Integer> forbidden = new HashSet<Integer>();
 		forbidden.add(264);
 		forbidden.add(265);
@@ -23,7 +24,7 @@ public class VMain extends JavaPlugin {
 		forbidden.add(41);
 		forbidden.add(42);
 		forbidden.add(57);
-		Iterator<?> itr = CraftingManager.a().b().iterator();
+                Iterator<?> itr = CraftingManager.getInstance().getRecipies().iterator();
 		while (itr.hasNext()) {
 			Object o = itr.next();
 			if (o instanceof ShapedRecipes) {
@@ -41,17 +42,18 @@ public class VMain extends JavaPlugin {
 			Block localBlock = (Block) a[i][0];
 			ItemStack localItemStack = (ItemStack) a[i][1];
 			CraftingManager
-					.a()
-					.b()
+					.getInstance()
+					.getRecipies()
 					.add(new ShapedRecipes(2, 2, new ItemStack[] {
 							localItemStack, localItemStack, localItemStack,
 							localItemStack }, new ItemStack(localBlock)));
-			CraftingManager.a().a(localItemStack,
-					new Object[] { "#", Character.valueOf('#'), localBlock });
+			CraftingManager.getInstance().registerShapedRecipe(
+                                                     localItemStack, new Object[]{ "#", Character.valueOf('#'), localBlock });
 		}
 		System.out.println("[Valuables] Finished changing recipes.");
 	}
 
+        @Override
 	public void onDisable() {
 	}
 }
